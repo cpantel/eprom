@@ -2,35 +2,66 @@
 
 enum State { waitingCommand, readingAddress, readingData, readingReadSize };
 
+
+/*
+ * portB 0-7 <-> data bus
+ * 
+ * portC 0
+ * portC 1
+ * portC 2
+ * portC 3 
+ * portC 4  -> CE 
+ * portC 5  -> OE
+ * portC 6 <- RESET
+ * portC 7 --- N/A
+ * 
+ * portD 0 <-  Rx
+ * portD 1  -> Tx
+ * portD 2
+ * portD 3
+ * portD 4
+ * portD 5
+ * portD 6
+ * portD 7 
+ * 
+ */
+
+// use when reading
 void CE_Disable() {
   PORTC |= B00010000;
 }
 
-void CE_High() {
-  CE_Disable();
-}
-
+// use when reading
 void CE_Enable() {
   PORTC &= B11101111;
 }
 
+// use when writing
+void CE_High() {
+  CE_Disable();
+}
+
+// use when writing
 void CE_Low() {
   CE_Enable();
 }
 
+// use when reading
 void OE_Disable() {
   PORTC |= B00100000;
 }
 
-void OE_High() {
-  OE_Disable();  
-}
-
-
+// use when reading
 void OE_Enable() {
   PORTC &= B11011111;
 }
 
+// use when writing
+void OE_High() {
+  OE_Disable();  
+}
+
+// use when writing
 void OE_Low() {
   OE_Enable();  
 }
