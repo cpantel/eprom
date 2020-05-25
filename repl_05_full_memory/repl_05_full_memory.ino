@@ -92,7 +92,6 @@ void setModeWrite() {
 }
 
 
-
 void addressBusEnable() {
   DDRC |= B00000111;      // address bus[10:8]
   DDRD |= B01100000;      // serial control for address bus[7:0]
@@ -112,8 +111,6 @@ void serialClockDown() {
   delay(1);
 }
 
-
-
 void serialToParallel (byte address) {
   serialClockUp();
   for (unsigned int index = 128; index > 0; index /=2 ) {
@@ -127,7 +124,6 @@ void serialToParallel (byte address) {
     //delay(5);
     serialClockUp();
   }
-  
 }
 
 void setAddress(word address) {
@@ -280,18 +276,26 @@ void loop() {
             delay(23);  // Tpw 50us
             Serial.print("ok 8 CE_high Tpw\n");
             CE_Low();
-            
             //delay(1);
             Serial.print("ok 9  CE_Low\n");
+
+
+            dataBusAsInput();
+
+
+            
             OE_Low();
             delay(1);
             Serial.print("ok 10 OE_low 2\n");
             
-            
+                        
             Serial.print("ok\n");
             if (autoincrement) {
               ++address;
             }
+
+            CE_Disable();
+            OE_Disable();  
             setModeRead();
 
             state = waitingCommand;
@@ -316,7 +320,7 @@ void loop() {
             setModeRead();
             delay(100);  
             
-            
+          
             dataBusAsInput();
             
             while ( readSize > 0 ) {
